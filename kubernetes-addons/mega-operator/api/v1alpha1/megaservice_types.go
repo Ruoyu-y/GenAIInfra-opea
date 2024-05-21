@@ -20,16 +20,36 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+const (
+	MegaEmbedding MegaServiceType = "embedding"
+	MegaRetrieval MegaServiceType = "retrieval"
+	MegaGuardrail MegaServiceType = "guardrail"
+	MegaLLM       MegaServiceType = "llm"
+	MegaReranking MegaServiceType = "reranking"
+	MegaTTS       MegaServiceType = "tts"
+	MegaASR       MegaServiceType = "asr"
+)
+
+// Placeholder for service configurations
+type ServiceConfiguration struct {
+}
+
+// MegaServiceType defines type of MegaService
+type MegaServiceType string
+
+// ServicePort defines port information of MegaService
+type ServicePort struct {
+	Name    string `json:"name,omitempty"`
+	PortNum int    `json:"portnum"`
+}
 
 // MegaServiceSpec defines the desired state of MegaService
 type MegaServiceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of MegaService. Edit megaservice_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	ServiceIP   string          `json:"serviceIp"`
+	ServiceType MegaServiceType `json:"megaServiceType"`
+	Ports       []ServicePort   `json:"ip"`
+	//optional
+	Configurations ServiceConfiguration `json:"configuration,omitempty"`
 }
 
 // MegaServiceStatus defines the observed state of MegaService

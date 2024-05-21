@@ -23,13 +23,17 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// +kubebuilder:default={exclusive: true}
 // MegaPipelineSpec defines the desired state of MegaPipeline
 type MegaPipelineSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of MegaPipeline. Edit megapipeline_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Owner    string   `json:"owner,omitempty"`
+	MicroSvc []string `json:"microsvc"`
+	//optional
+	Exclusive bool `json:"exclusive,omitempty"`
 }
 
 // MegaPipelineStatus defines the observed state of MegaPipeline
