@@ -100,7 +100,8 @@ var yamlDict = map[string]string{
 }
 
 var (
-	_log = ctrl.Log.WithName("GMC")
+	_log       = ctrl.Log.WithName("GMC")
+	InvalidErr = errors.New("Invalid content")
 )
 
 // GMConnectorReconciler reconciles a GMConnector object
@@ -203,6 +204,22 @@ func (r *GMConnectorReconciler) reconcileResource(ctx context.Context, graphNs s
 			var newEnvVars []corev1.EnvVar
 			for name, value := range *svcCfg {
 				if name == "endpoint" || name == "nodes" {
+					continue
+				}
+				// switch container image
+				if name == "containerImage" {
+					// split value into container index and image name by separator "?"
+					info := strings.Split(value, "?")
+					if len(info) != 2 {
+						_log.Error(InvalidErr, "Invalid value set for containerImage")
+						continue
+					}
+					index, err := strconv.Atoi(info[0])
+					if err != nil {
+						_log.Error(err, "Invalid value set for containerImage")
+						continue
+					}
+					deployment_obj.Spec.Template.Spec.Containers[index].Image = info[1]
 					continue
 				}
 				if isDownStreamEndpointKey(name) {
